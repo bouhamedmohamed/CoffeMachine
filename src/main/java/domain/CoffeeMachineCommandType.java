@@ -38,4 +38,8 @@ public enum CoffeeMachineCommandType {
                 .findFirst();
 
     }
+
+    public double buyAndGetMoneyBack(double amount) {
+        return amount-price;
+    }
 }
