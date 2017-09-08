@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum CoffeeMachineCommandType {
-    ORANGE("O", 0.6, new String[]{"orange juice"}),
-    COFFEE("C", 0.4, new String[]{"coffee"}),
-    TEA("T", 0.6, new String[]{"tea"}),
-    CHOCOLATE("H", 0.5, new String[]{"chocolate"}),
+    ORANGE("O", 0.6, new String[]{"one orange juice"}),
+    COFFEE("C", 0.4, new String[]{"1 coffee"}),
+    TEA("T", 0.6, new String[]{"1 tea"}),
+    CHOCOLATE("H", 0.5, new String[]{"1 chocolate"}),
+    HOTCOFFE("Ch", 0.4, new String[]{"an extra hot coffee"}),
     EMPTY("", 0.0, new String[]{"", "no", "therefore no"}),
     Zero("0", 0.0, new String[]{"", "0", "a"});
     private String keyCommand;

@@ -18,17 +18,26 @@ public class CoffeeMachine {
         final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
         final String commandSugar = getPartFromCommand(command, SUGAR_QUANTITY);
         final String commandStick = getPartFromCommand(command, STICK_STATE);
-        if(!commandDrinkType.equals("O"))
-        return makeInstantProduct(commandDrinkType, commandSugar, commandStick);
+        if (!isPreparedDrink(commandDrinkType))
+            return makeInstantProduct(commandDrinkType, commandSugar, commandStick);
         return makePreparedProduct(commandDrinkType, commandSugar, commandStick);
     }
 
+    private boolean isPreparedDrink(String commandDrinkType) {
+        return commandDrinkType.equals("O") || isHotDrink(commandDrinkType);
+    }
+
+    private boolean isHotDrink(String commandDrinkType) {
+        return commandDrinkType.length() > 1;
+    }
+
     private String makePreparedProduct(String commandDrinkType, String commandSugar, String commandStick) {
-        return "M:Drink maker will make one " + getSymbol(commandDrinkType, DRINK_TYPE);
+        return "M:Drink maker will make " + getSymbol(commandDrinkType, DRINK_TYPE)
+                + " with " + getSymbol(commandSugar, SUGAR_QUANTITY) + " sugar";
     }
 
     private String makeInstantProduct(String commandDrinkType, String commandSugar, String commandStick) {
-        return "M:Drink maker makes 1 " + getSymbol(commandDrinkType, DRINK_TYPE)
+        return "M:Drink maker makes " + getSymbol(commandDrinkType, DRINK_TYPE)
                 + " with " + getSymbol(commandSugar, SUGAR_QUANTITY)
                 + " sugar and " + getSymbol(commandStick, STICK_STATE)
                 + " stick";
