@@ -22,6 +22,6 @@ public class CoffeeMachine {
             stickState = "a";
 
 
-        return "Drink maker makes 1 " + dringType + " with " + sugarQuantity + " sugar and " + stickState + " stick";
+        return "M:Drink maker makes 1 " + dringType + " with " + sugarQuantity + " sugar and " + stickState + " stick";
     }
 }
