@@ -6,22 +6,47 @@ public class CoffeeMachine {
     public String sendCommand(String command) {
         if (command.equals(""))
             return "";
-        String dringType = "";
-        String sugarQuantity = "no";
-        String stickState = "therefore no";
+        return buildCommand(command);
+    }
+
+    private String buildCommand(String command) {
+
         final String[] commandParts = command.split(":");
-        final String commandDrinkType = commandParts.length > 0 ? commandParts[0] : "";
-        final String commandSugar = commandParts.length > 1 ? commandParts[1] : "";
-        final String commandStick = commandParts.length > 2 ? commandParts[2] : "";
+        final String commandDrinkType = getCommandPart(commandParts, 0);
+        final String commandSugar = getCommandPart(commandParts, 1);
+        final String commandStick = getCommandPart(commandParts, 2);
+
+        return "M:Drink maker makes 1 " + getDrinkType(commandDrinkType) + " with " + calculateSugar(commandSugar) + " sugar and " + addStick(commandStick) + " stick";
+    }
+
+    private String getCommandPart(String[] commandParts, int indice) {
+        final boolean isElementExist = commandParts.length > indice;
+        if (isElementExist)
+            return commandParts[indice];
+        return "";
+    }
+
+    private String getDrinkType(String commandDrinkType) {
+        String drinkType = "";
+
         final Optional<CoffeeMachineCommandType> commandType = CoffeeMachineCommandType.getCommandType(commandDrinkType);
         if (commandType.isPresent())
-            dringType = commandType.get().getSymbolCommand();
-        if (!commandSugar.equals(""))
-            sugarQuantity = commandSugar;
+            drinkType = commandType.get().getSymbolCommand();
+        return drinkType;
+    }
+
+    private String addStick(String commandStick) {
+
+        String stickState = "therefore no";
         if (!commandStick.equals(""))
             stickState = "a";
+        return stickState;
+    }
 
-
-        return "M:Drink maker makes 1 " + dringType + " with " + sugarQuantity + " sugar and " + stickState + " stick";
+    private String calculateSugar(String commandSugar) {
+        String sugarQuantity = "no";
+        if (!commandSugar.equals(""))
+            sugarQuantity = commandSugar;
+        return sugarQuantity;
     }
 }
