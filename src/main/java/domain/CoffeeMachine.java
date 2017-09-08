@@ -17,7 +17,7 @@ public class CoffeeMachine {
         if (commandType.isPresent())
             dringType = commandType.get().getSymbolCommand();
         if (!commandSugar.equals(""))
-            sugarQuantity = "1";
+            sugarQuantity = commandSugar;
         if (!commandStick.equals(""))
             stickState = "a";
 
