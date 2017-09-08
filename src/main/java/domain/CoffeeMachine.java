@@ -3,6 +3,10 @@ package domain;
 import java.util.Optional;
 
 public class CoffeeMachine {
+    final static int DRINK_TYPE = 0;
+    final static int SUGAR_QUANTITY = 1;
+    final static int STICK_STATE = 2;
+
     public String sendCommand(String command) {
         if (command.equals(""))
             return "";
@@ -10,43 +14,27 @@ public class CoffeeMachine {
     }
 
     private String buildCommand(String command) {
-
         final String[] commandParts = command.split(":");
-        final String commandDrinkType = getCommandPart(commandParts, 0);
-        final String commandSugar = getCommandPart(commandParts, 1);
-        final String commandStick = getCommandPart(commandParts, 2);
-
-        return "M:Drink maker makes 1 " + getDrinkType(commandDrinkType) + " with " + calculateSugar(commandSugar) + " sugar and " + addStick(commandStick) + " stick";
+        final String commandDrinkType = getPartFromCommand(commandParts, DRINK_TYPE);
+        final String commandSugar = getPartFromCommand(commandParts, SUGAR_QUANTITY);
+        final String commandStick = getPartFromCommand(commandParts, STICK_STATE);
+        return "M:Drink maker makes 1 " + commandDrinkType + " with " + commandSugar + " sugar and " + commandStick + " stick";
     }
 
-    private String getCommandPart(String[] commandParts, int indice) {
+    private String getPartFromCommand(String[] commandParts, int indice) {
+        String commandPart = "";
         final boolean isElementExist = commandParts.length > indice;
         if (isElementExist)
-            return commandParts[indice];
-        return "";
+            commandPart = commandParts[indice];
+        return getSymbol(commandPart, indice);
     }
 
-    private String getDrinkType(String commandDrinkType) {
-        String drinkType = "";
-
-        final Optional<CoffeeMachineCommandType> commandType = CoffeeMachineCommandType.getCommandType(commandDrinkType);
-        if (commandType.isPresent())
-            drinkType = commandType.get().getSymbolCommand();
-        return drinkType;
+    private String getSymbol(String commandPart, int position) {
+        String symbol = commandPart;
+        final Optional<CoffeeMachineCommandType> commandPartType = CoffeeMachineCommandType.getCommandType(commandPart);
+        if (commandPartType.isPresent())
+            symbol = commandPartType.get().getSymbolCommand()[position];
+        return symbol;
     }
 
-    private String addStick(String commandStick) {
-
-        String stickState = "therefore no";
-        if (!commandStick.equals(""))
-            stickState = "a";
-        return stickState;
-    }
-
-    private String calculateSugar(String commandSugar) {
-        String sugarQuantity = "no";
-        if (!commandSugar.equals(""))
-            sugarQuantity = commandSugar;
-        return sugarQuantity;
-    }
 }

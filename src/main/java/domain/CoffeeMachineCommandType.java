@@ -6,11 +6,13 @@ import java.util.Optional;
 public enum CoffeeMachineCommandType {
     COFFEE("C", "coffee"),
     TEA("T", "tea"),
-    CHOCOLATE("H", "chocolate");
+    CHOCOLATE("H", "chocolate"),
+    EMPTY("", "", "no", "therefore no"),
+    Zero("0", "", "0", "a");
     private String keyCommand;
-    private String symbolCommand;
+    private String[] symbolCommand;
 
-    CoffeeMachineCommandType(String keyCommand, String symbolCommand) {
+    CoffeeMachineCommandType(String keyCommand, String... symbolCommand) {
         this.keyCommand = keyCommand;
         this.symbolCommand = symbolCommand;
     }
@@ -19,7 +21,7 @@ public enum CoffeeMachineCommandType {
         return keyCommand;
     }
 
-    public String getSymbolCommand() {
+    public String[] getSymbolCommand() {
         return symbolCommand;
     }
 
