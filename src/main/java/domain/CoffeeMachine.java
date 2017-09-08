@@ -32,8 +32,15 @@ public class CoffeeMachine {
     }
 
     private String makePreparedProduct(String commandDrinkType, String commandSugar, String commandStick) {
-        return "M:Drink maker will make " + getSymbol(commandDrinkType, DRINK_TYPE)
-                + " with " + getSymbol(commandSugar, SUGAR_QUANTITY) + " sugar";
+        String messageToPrint = "M:Drink maker will make " + getSymbol(commandDrinkType, DRINK_TYPE);
+        if (!commandDrinkType.equals("O")) {
+            final String quantity = getSymbol(commandSugar, SUGAR_QUANTITY);
+            messageToPrint = messageToPrint + " with " + SugarQuantity.getQuantitySymbol(quantity) + " sugar";
+        }
+        if (!commandSugar.equals(""))
+            messageToPrint = messageToPrint + " and " + getSymbol(commandStick, STICK_STATE)
+                    + " stick";
+        return messageToPrint;
     }
 
     private String makeInstantProduct(String commandDrinkType, String commandSugar, String commandStick) {

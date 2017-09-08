@@ -9,6 +9,7 @@ public enum CoffeeMachineCommandType {
     TEA("T", 0.6, new String[]{"1 tea"}),
     CHOCOLATE("H", 0.5, new String[]{"1 chocolate"}),
     HOTCOFFE("Ch", 0.4, new String[]{"an extra hot coffee"}),
+    HOTCHOCOLATE("Hh", 0.5, new String[]{"an extra hot chocolate"}),
     EMPTY("", 0.0, new String[]{"", "no", "therefore no"}),
     Zero("0", 0.0, new String[]{"", "0", "a"});
     private String keyCommand;
@@ -42,6 +43,6 @@ public enum CoffeeMachineCommandType {
     }
 
     public double buyAndGetMoneyBack(double amount) {
-        return amount-price;
+        return amount - price;
     }
 }
