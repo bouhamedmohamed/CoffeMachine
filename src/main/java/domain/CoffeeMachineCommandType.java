@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum CoffeeMachineCommandType {
+    ORANGE("O", 0.6, new String[]{"orange juice"}),
     COFFEE("C", 0.4, new String[]{"coffee"}),
     TEA("T", 0.6, new String[]{"tea"}),
     CHOCOLATE("H", 0.5, new String[]{"chocolate"}),
