@@ -41,4 +41,9 @@ public class CoffeeMachineTest {
     public void should_send_coffee_with_two_sugar_and_a_stick_when_we_put_T10() {
         Assert.assertEquals("Drink maker makes 1 tea with 2 sugar and a stick", coffeeMachine.sendCommand("T:2:0"));
     }
+
+    @Test
+    public void should_send_coffee_with_two_sugar_and_a_stick_when_we_put_C1() {
+        Assert.assertEquals("Drink maker makes 1 coffee with 1 sugar and therefore no stick", coffeeMachine.sendCommand("C:1:"));
+    }
 }
