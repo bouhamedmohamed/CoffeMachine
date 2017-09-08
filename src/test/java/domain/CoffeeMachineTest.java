@@ -19,16 +19,22 @@ public class CoffeeMachineTest {
 
     @Test
     public void should_send_tea_when_we_put_T() {
-        Assert.assertEquals("Drink maker makes 1 tea with no sugar therefore no stick", coffeeMachine.sendCommand("T::"));
+        Assert.assertEquals("Drink maker makes 1 tea with no sugar and therefore no stick", coffeeMachine.sendCommand("T::"));
     }
 
     @Test
     public void should_send_chocolate_when_we_put_H() {
-        Assert.assertEquals("Drink maker makes 1 chocolate with no sugar therefore no stick", coffeeMachine.sendCommand("H::"));
+        Assert.assertEquals("Drink maker makes 1 chocolate with no sugar and therefore no stick", coffeeMachine.sendCommand("H::"));
     }
 
     @Test
     public void should_send_coffee_when_we_put_C() {
-        Assert.assertEquals("Drink maker makes 1 coffee with no sugar therefore no stick", coffeeMachine.sendCommand("C::"));
+        Assert.assertEquals("Drink maker makes 1 coffee with no sugar and therefore no stick", coffeeMachine.sendCommand("C::"));
     }
+
+    @Test
+    public void should_send_coffee_with_one_sugar_and_a_stick_when_we_put_T10() {
+        Assert.assertEquals("Drink maker makes 1 tea with 1 sugar and a stick", coffeeMachine.sendCommand("T:1:0"));
+    }
+
 }
