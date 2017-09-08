@@ -5,7 +5,8 @@ import java.util.Optional;
 
 public enum SugarQuantity {
     ZERO("no", "no"),
-    ONE("1", "one");
+    ONE("1", "one"),
+    TWO("2", "two");
 
     private String keyNumber;
     private String Symbol;

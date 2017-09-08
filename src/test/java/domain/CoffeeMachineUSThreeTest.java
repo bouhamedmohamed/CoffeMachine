@@ -26,4 +26,8 @@ public class CoffeeMachineUSThreeTest {
     public void should_make_an_extra_hot_chocolate_with_one_sugar_and_a_stick() {
         Assert.assertEquals("M:Drink maker will make an extra hot chocolate with one sugar and a stick", coffeeMachine.prepareCommand("Hh:1:0", 0.6));
     }
+    @Test
+    public void should_make_an_extra_hot_tea_with_two_sugar_and_a_stick() {
+        Assert.assertEquals("M:Drink maker will make an extra hot tea with two sugar and a stick", coffeeMachine.prepareCommand("Th:2:0", 0.6));
+    }
 }
