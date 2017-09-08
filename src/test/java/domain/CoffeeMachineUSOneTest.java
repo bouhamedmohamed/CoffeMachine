@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CoffeeMachineTest {
+public class CoffeeMachineUSOneTest {
     private CoffeeMachine coffeeMachine;
 
     @Before

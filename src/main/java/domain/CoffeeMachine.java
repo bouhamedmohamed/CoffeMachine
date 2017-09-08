@@ -37,4 +37,8 @@ public class CoffeeMachine {
         return symbol;
     }
 
+
+    public String prepareCommand(String s, double v) {
+        return "M: Enough money please add 0.2";
+    }
 }
