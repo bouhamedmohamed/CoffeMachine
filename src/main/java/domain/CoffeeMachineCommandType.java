@@ -13,7 +13,7 @@ public enum CoffeeMachineCommandType {
     HOTTEA("Th", 0.6, new String[]{"an extra hot tea"}),
     EMPTY("", 0.0, new String[]{"", "no", "therefore no"}),
     Zero("0", 0.0, new String[]{"", "0", "a"});
-
+    static final String HOT_DRINK_SYMBOL = "h";
     private String keyCommand;
     private Double price;
     private String[] symbolCommand;
@@ -22,10 +22,6 @@ public enum CoffeeMachineCommandType {
         this.keyCommand = keyCommand;
         this.price = price;
         this.symbolCommand = symbolCommand;
-    }
-
-    public Double getPrice() {
-        return price;
     }
 
 
@@ -44,7 +40,29 @@ public enum CoffeeMachineCommandType {
 
     }
 
+
+    public static String getSymbolCommand(String commandPart, int position) {
+        String symbol = commandPart;
+        final Optional<CoffeeMachineCommandType> commandPartType = getCommandType(commandPart);
+        if (commandPartType.isPresent())
+            symbol = commandPartType.get().getSymbolCommand()[position];
+        return symbol;
+    }
+
     public double buyAndGetMoneyBack(double amount) {
         return amount - price;
+    }
+
+    public static boolean isHotDrink(String commandDrinkKey) {
+
+        final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkKey);
+        if (commandType.isPresent())
+            return commandDrinkKey.contains(HOT_DRINK_SYMBOL);
+        return false;
+
+    }
+
+    public static boolean isOrangeJuce(String commandDrinkType) {
+        return commandDrinkType.equals("O");
     }
 }
