@@ -65,4 +65,11 @@ public enum CoffeeMachineCommandType {
     public static boolean isOrangeJuce(String commandDrinkType) {
         return commandDrinkType.equals("O");
     }
+
+    public static double getTotalPrice(String commandDrinkType, int commandNumber) {
+        final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkType);
+        if (commandType.isPresent())
+            return commandType.get().price * commandNumber;
+        return 0;
+    }
 }

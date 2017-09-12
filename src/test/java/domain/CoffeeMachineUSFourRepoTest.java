@@ -37,4 +37,14 @@ public class CoffeeMachineUSFourRepoTest {
         coffeeMachine.prepareCommand("H:1:0", 1);
         Assert.assertEquals(2, coffeeMachineRepository.getCoffeeMachineCommandAtDay(LocalDate.now()).size());
     }
+
+    @Test
+    public void should_return_total_price() throws Exception {
+        final CoffeeMachineRepository coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
+        CoffeeMachine coffeeMachine = new CoffeeMachine(coffeeMachineRepository);
+        coffeeMachine.prepareCommand("T:1:0", 1);
+        coffeeMachine.prepareCommand("C:1:0", 1);
+        Assert.assertEquals(1.0, coffeeMachine.getStatisticCommand(), 0.0001);
+
+    }
 }

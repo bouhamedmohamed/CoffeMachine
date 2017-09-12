@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class CoffeeMachineRepositoryImplementation implements CoffeeMachineRepository {
     private Map<String, List<LocalDateTime>> commandsCoffeeMachine = new HashMap<>();
+    private double sommeTotalCommand = 0;
 
     @Override
     public void addCoffeeMachineCommand(String drinkType) {
@@ -35,5 +36,18 @@ public class CoffeeMachineRepositoryImplementation implements CoffeeMachineRepos
                 ));
 
 
+    }
+
+    @Override
+    public double getCoffeeMachineStatCommandAtDay(LocalDate commandDay) {
+        sommeTotalCommand = 0;
+        final Map<String, CommandCoffeeMachine> coffeeMachineCommandAtDay = getCoffeeMachineCommandAtDay(commandDay);
+        coffeeMachineCommandAtDay.values().stream().forEach(commandCoffeeMachine -> getCommandCoffeeMachineConsumer(commandCoffeeMachine));
+        return sommeTotalCommand;
+    }
+
+    private String getCommandCoffeeMachineConsumer(CommandCoffeeMachine commandCoffeeMachine) {
+        sommeTotalCommand += commandCoffeeMachine.getTotalPrice();
+        return commandCoffeeMachine.toString() + " " + commandCoffeeMachine.getTotalPrice();
     }
 }

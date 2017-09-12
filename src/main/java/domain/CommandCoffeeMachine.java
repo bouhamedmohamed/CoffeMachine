@@ -21,4 +21,8 @@ public class CommandCoffeeMachine {
                 ", commandDay=" + commandDay +
                 '}';
     }
+
+    public double getTotalPrice() {
+        return CoffeeMachineCommandType.getTotalPrice(commandDrinkType,commandNumber);
+    }
 }

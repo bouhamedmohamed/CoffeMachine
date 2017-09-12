@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static domain.CoffeeMachineCommandType.getCommandType;
@@ -27,6 +28,10 @@ public class CoffeeMachine {
         return buildCommand(command);
     }
 
+    public double getStatisticCommand() {
+        return coffeeMachineRepository.getCoffeeMachineStatCommandAtDay(LocalDate.now());
+    }
+
     private String buildCommand(String command) {
 
         final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
@@ -35,6 +40,7 @@ public class CoffeeMachine {
         coffeeMachineRepository.addCoffeeMachineCommand(commandDrinkType);
         return buildProductCommandToPrint(commandDrinkType, commandSugar, commandStick);
     }
+
 
     private String buildProductCommandToPrint(String commandDrinkType, String commandSugar, String commandStick) {
 
