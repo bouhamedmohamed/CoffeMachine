@@ -20,11 +20,21 @@ public class CoffeeMachineUSFourRepoTest {
         coffeeMachine.prepareCommand("T:1:0", 1);
         Mockito.verify(coffeeMachineRepository).addCoffeeMachineCommand("T");
     }
+
     @Test
     public void should_return_one_command_when_we_add_one_command_on_repo() {
         final CoffeeMachineRepository coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
         CoffeeMachine coffeeMachine = new CoffeeMachine(coffeeMachineRepository);
         coffeeMachine.prepareCommand("T:1:0", 1);
-        Assert.assertEquals(1,coffeeMachineRepository.getCoffeeMachineCommandAtDay(LocalDate.now()).size());
+        Assert.assertEquals(1, coffeeMachineRepository.getCoffeeMachineCommandAtDay(LocalDate.now()).size());
+    }
+
+    @Test
+    public void should_return_two_commands_when_we_add_two_commands_on_repo() {
+        final CoffeeMachineRepository coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
+        CoffeeMachine coffeeMachine = new CoffeeMachine(coffeeMachineRepository);
+        coffeeMachine.prepareCommand("T:1:0", 1);
+        coffeeMachine.prepareCommand("H:1:0", 1);
+        Assert.assertEquals(2, coffeeMachineRepository.getCoffeeMachineCommandAtDay(LocalDate.now()).size());
     }
 }

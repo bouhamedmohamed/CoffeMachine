@@ -1,10 +1,10 @@
 package domain;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Map;
 
 public interface CoffeeMachineRepository {
     void addCoffeeMachineCommand(String drinkType);
 
-    List<CommandCoffeeMachine> getCoffeeMachineCommandAtDay(LocalDate commandDay);
+    Map<String, CommandCoffeeMachine> getCoffeeMachineCommandAtDay(LocalDate commandDay);
 }

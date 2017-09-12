@@ -12,4 +12,13 @@ public class CommandCoffeeMachine {
         this.commandNumber = commandNumber;
         this.commandDay = commandDay;
     }
+
+    @Override
+    public String toString() {
+        return "CommandCoffeeMachine{" +
+                "commandDrinkType='" + commandDrinkType + '\'' +
+                ", commandNumber=" + commandNumber +
+                ", commandDay=" + commandDay +
+                '}';
+    }
 }
