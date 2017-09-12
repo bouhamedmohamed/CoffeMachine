@@ -9,6 +9,16 @@ public class CoffeeMachine {
     final static int DRINK_TYPE = 0;
     final static int SUGAR_QUANTITY = 1;
     final static int STICK_STATE = 2;
+    private final CoffeeMachineRepository coffeeMachineRepository;
+
+    public CoffeeMachine(CoffeeMachineRepository coffeeMachineRepository) {
+
+        this.coffeeMachineRepository = coffeeMachineRepository;
+    }
+
+    public CoffeeMachine() {
+        this.coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
+    }
 
     public String sendCommand(String command) {
         final boolean isEmptyCommand = command.equals("");
@@ -22,7 +32,7 @@ public class CoffeeMachine {
         final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
         final String commandSugar = getPartFromCommand(command, SUGAR_QUANTITY);
         final String commandStick = getPartFromCommand(command, STICK_STATE);
-
+        coffeeMachineRepository.addCoffeeMachineCommand(commandDrinkType);
         return buildProductCommandToPrint(commandDrinkType, commandSugar, commandStick);
     }
 
@@ -68,6 +78,7 @@ public class CoffeeMachine {
             sugarQuantity = SugarQuantityNumberToLetter.getQuantitySymbol(sugarQuantity);
         return sugarQuantity;
     }
+
     private String buildMessageProduct(String commandDrinkType, boolean preparedDrink) {
         String instantOrPreparedProduct = "makes";
         if (preparedDrink || isOrangeJuce(commandDrinkType)) {
