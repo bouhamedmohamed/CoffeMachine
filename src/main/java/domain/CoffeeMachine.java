@@ -12,6 +12,7 @@ public class CoffeeMachine {
     final static int STICK_STATE = 2;
     private final CoffeeMachineRepository coffeeMachineRepository;
 
+
     public CoffeeMachine(CoffeeMachineRepository coffeeMachineRepository) {
 
         this.coffeeMachineRepository = coffeeMachineRepository;
@@ -59,8 +60,19 @@ public class CoffeeMachine {
     }
 
 
-    public String prepareCommand(String command, double amount) {
-        double moneyBack = buyAndGetBack(command, amount);
+    public String CheckCommandBeforePreparation(String command, double amount) {
+
+        final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
+        final boolean haveEnoughresourceToPrepareDrink = CoffeeMachineCommandType.haveEnoughQuantityToserveTheDrink(commandDrinkType);
+        if (haveEnoughresourceToPrepareDrink) {
+            return prepareCommand(command, amount, commandDrinkType);
+        } else {
+            throw new RuntimeException("Not enough resource to prepare your drink we sent an email to fix this ASAP");
+        }
+    }
+
+    private String prepareCommand(String command, double amount, String commandDrinkType) {
+        double moneyBack = buyAndGetBack(commandDrinkType, amount);
         final boolean isNotEnoughMoney = moneyBack < 0;
 
         if (isNotEnoughMoney) {
@@ -69,8 +81,8 @@ public class CoffeeMachine {
             return sendCommand(command);
     }
 
-    private double buyAndGetBack(String command, double amount) {
-        final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
+    private double buyAndGetBack(String commandDrinkType, double amount) {
+
         final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkType);
         if (commandType.isPresent()) {
             return commandType.get().buyAndGetMoneyBack(amount);

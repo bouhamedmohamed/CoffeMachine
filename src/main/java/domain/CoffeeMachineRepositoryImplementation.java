@@ -1,5 +1,8 @@
 package domain;
 
+import domain.CoffeeMachineRepository;
+import domain.CommandCoffeeMachine;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
