@@ -133,7 +133,7 @@ public class CoffeeMachine {
     }
 
     private boolean isOrangeJuce(String commandDrinkType) {
-        return CoffeeMachineCommandType.isOrangeJuce(commandDrinkType);
+        return CoffeeMachineCommandType.isOrangeJuice(commandDrinkType);
     }
 
     private boolean isHotDrink(String commandDrinkType) throws CommandException {
