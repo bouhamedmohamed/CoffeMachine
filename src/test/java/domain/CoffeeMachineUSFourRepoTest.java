@@ -17,24 +17,26 @@ public class CoffeeMachineUSFourRepoTest {
     @Mock
     StockMachine stockMachine;
     CoffeeMachine coffeeMachine;
+    @Mock
+    private EmailNotification email;
 
     @Before
     public void setUp() throws Exception {
         coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
-        coffeeMachine = new CoffeeMachine(coffeeMachineRepository, stockMachine);
+        coffeeMachine = new CoffeeMachine(coffeeMachineRepository, stockMachine, email);
     }
 
     @Test
     public void should_return_one_command_when_we_add_one_command_on_repo() throws CommandException {
-        Mockito.when(stockMachine.hasEnoughRessource("T")).thenReturn(true);
+        Mockito.when(stockMachine.isEmpty("T")).thenReturn(true);
         coffeeMachine.checkCommandBeforePreparation("T:1:0", 1);
         Assert.assertEquals(1, coffeeMachineRepository.getCoffeeMachineCommandAtDay(LocalDate.now()).size());
     }
 
     @Test
     public void should_return_two_commands_when_we_add_two_commands_on_repo() throws CommandException {
-        Mockito.when(stockMachine.hasEnoughRessource("T")).thenReturn(true);
-        Mockito.when(stockMachine.hasEnoughRessource("H")).thenReturn(true);
+        Mockito.when(stockMachine.isEmpty("T")).thenReturn(true);
+        Mockito.when(stockMachine.isEmpty("H")).thenReturn(true);
         coffeeMachine.checkCommandBeforePreparation("T:1:0", 1);
         coffeeMachine.checkCommandBeforePreparation("H:1:0", 1);
         Assert.assertEquals(2, coffeeMachineRepository.getCoffeeMachineCommandAtDay(LocalDate.now()).size());
@@ -42,8 +44,8 @@ public class CoffeeMachineUSFourRepoTest {
 
     @Test
     public void should_return_total_price() throws Exception {
-        Mockito.when(stockMachine.hasEnoughRessource("T")).thenReturn(true);
-        Mockito.when(stockMachine.hasEnoughRessource("C")).thenReturn(true);
+        Mockito.when(stockMachine.isEmpty("T")).thenReturn(true);
+        Mockito.when(stockMachine.isEmpty("C")).thenReturn(true);
         coffeeMachine.checkCommandBeforePreparation("T:1:0", 1);
         coffeeMachine.checkCommandBeforePreparation("C:1:0", 1);
         Assert.assertEquals(1.0, coffeeMachine.getStatisticCommand(), 0.0001);

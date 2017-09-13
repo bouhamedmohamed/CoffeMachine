@@ -11,12 +11,14 @@ public class CoffeeMachine {
     final static int STICK_STATE = 2;
     private final CoffeeMachineRepository coffeeMachineRepository;
     private final StockMachine stockMachine;
+    private EmailNotification email;
 
 
-    public CoffeeMachine(CoffeeMachineRepository coffeeMachineRepository, StockMachine stockMachine) {
+    public CoffeeMachine(CoffeeMachineRepository coffeeMachineRepository, StockMachine stockMachine, EmailNotification email) {
 
         this.coffeeMachineRepository = coffeeMachineRepository;
         this.stockMachine = stockMachine;
+        this.email = email;
     }
 
     public String checkCommandBeforePreparation(String command, double amount) {
@@ -26,17 +28,23 @@ public class CoffeeMachine {
 
         final boolean haveEnoughResourceToPrepareDrink;
         try {
-            haveEnoughResourceToPrepareDrink = stockMachine.hasEnoughRessource(commandDrinkType);
+            haveEnoughResourceToPrepareDrink = stockMachine.isEmpty(commandDrinkType);
 
             if (haveEnoughResourceToPrepareDrink) {
                 return prepareCommand(command, amount, commandDrinkType);
             }
+            else
+                email.sendNotification(commandDrinkType);
 
         } catch (CommandException commandExcpetion) {
             System.out.println(commandExcpetion);
         }
 
         return "";
+    }
+
+    public double getStatisticCommand() {
+        return coffeeMachineRepository.getCoffeeMachineStatCommandAtDay(LocalDate.now());
     }
 
     private String sendCommand(String command) throws CommandException {
@@ -46,9 +54,6 @@ public class CoffeeMachine {
         return buildCommand(command);
     }
 
-    public double getStatisticCommand() {
-        return coffeeMachineRepository.getCoffeeMachineStatCommandAtDay(LocalDate.now());
-    }
 
     private String buildCommand(String command) throws CommandException {
 

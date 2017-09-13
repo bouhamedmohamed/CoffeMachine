@@ -15,12 +15,14 @@ public class CoffeeMachineUSTwoTest {
     CoffeeMachine coffeeMachine;
     @Mock
     StockMachine stockMachine;
+    @Mock
+    private EmailNotification email;
 
     @Before
     public void setUp() throws Exception {
-        when(stockMachine.hasEnoughRessource(any())).thenReturn(true);
+        when(stockMachine.isEmpty(any())).thenReturn(true);
         final CoffeeMachineRepository coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
-        coffeeMachine = new CoffeeMachine(coffeeMachineRepository, stockMachine);
+        coffeeMachine = new CoffeeMachine(coffeeMachineRepository, stockMachine, email);
     }
 
     @Test
