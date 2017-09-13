@@ -29,15 +29,27 @@ public class CoffeeMachineUSFiveTest {
 
     @Test(expected = CommandException.class)
     public void should_raise_an_exception_and_send_email_when_quantity_of_resource_end() throws CommandException {
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.TEA)
+                .build();
+
         when(stockMachine.isEmpty("T")).thenThrow(CommandException.class);
         given(stockMachine.isEmpty("T")).willThrow(new CommandException(""));
-        coffeeMachine.checkCommandBeforePreparation("T:1:0", 1);
+        coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1);
     }
 
     @Test
     public void should_send_email_to_notify_that_we_dont_have_enough_resource() throws CommandException {
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.TEA)
+                .build();
+
         when(stockMachine.isEmpty("T")).thenReturn(false);
-        coffeeMachine.checkCommandBeforePreparation("T:1:0", 1);
+        coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1);
         verify(email).sendNotification("T");
 
     }

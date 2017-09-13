@@ -17,6 +17,7 @@ public class CoffeeMachineUSThreeTest {
     StockMachine stockMachine;
     @Mock
     private EmailNotification email;
+
     @Before
     public void setUp() throws Exception {
         when(stockMachine.isEmpty(any())).thenReturn(true);
@@ -26,21 +27,48 @@ public class CoffeeMachineUSThreeTest {
 
     @Test
     public void should_make_one_orange_juice() {
-        Assert.assertEquals("M:Drink maker will make one orange juice", coffeeMachine.checkCommandBeforePreparation("O::", 0.6));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.ORANGE)
+                .build();
+        Assert.assertEquals("M:Drink maker will make one orange juice", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.6));
     }
 
     @Test
     public void should_make_an_extra_hot_coffee_with_no_sugar() {
-        Assert.assertEquals("M:Drink maker will make an extra hot coffee with no sugar", coffeeMachine.checkCommandBeforePreparation("Ch::", 0.6));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.COFFEE)
+                .withHotDrink(true)
+                .build();
+        Assert.assertEquals("M:Drink maker will make an extra hot coffee with no sugar", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.6));
     }
 
     @Test
     public void should_make_an_extra_hot_chocolate_with_one_sugar_and_a_stick() {
-        Assert.assertEquals("M:Drink maker will make an extra hot chocolate with one sugar and a stick", coffeeMachine.checkCommandBeforePreparation("Hh:1:0", 0.6));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.CHOCOLATE)
+                .withHotDrink(true)
+                .withSugar(1)
+                .withStick(true)
+                .build();
+        Assert.assertEquals("M:Drink maker will make an extra hot chocolate with one sugar and a stick", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.6));
     }
 
     @Test
     public void should_make_an_extra_hot_tea_with_two_sugar_and_a_stick() {
-        Assert.assertEquals("M:Drink maker will make an extra hot tea with two sugar and a stick", coffeeMachine.checkCommandBeforePreparation("Th:2:0", 0.6));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.TEA)
+                .withHotDrink(true)
+                .withSugar(2)
+                .withStick(true)
+                .build();
+        Assert.assertEquals("M:Drink maker will make an extra hot tea with two sugar and a stick", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.6));
     }
 }

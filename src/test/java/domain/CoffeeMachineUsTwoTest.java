@@ -27,16 +27,33 @@ public class CoffeeMachineUSTwoTest {
 
     @Test
     public void should_print_error_message_when_we_dont_put_enough_money_for_coffee() {
-        Assert.assertEquals("M: Enough money please add 0.2", coffeeMachine.checkCommandBeforePreparation("C::", 0.2));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.COFFEE)
+                .build();
+        Assert.assertEquals("M: Enough money please add 0.2", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.2));
     }
 
     @Test
     public void should_print_error_message_when_we_dont_put_enough_money_for_tea() {
-        Assert.assertEquals("M: Enough money please add 0.4", coffeeMachine.checkCommandBeforePreparation("T::", 0.2));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.TEA)
+                .build();
+        Assert.assertEquals("M: Enough money please add 0.4", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.2));
     }
 
     @Test
     public void should_send_coffee_with_two_sugar_and_a_stick_when_we_put_T20_when_we_have_enough_money() {
-        Assert.assertEquals("M:Drink maker makes 1 tea with 2 sugar and a stick", coffeeMachine.checkCommandBeforePreparation("T:2:0", 0.8));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.TEA)
+                .withSugar(2)
+                .withStick(true)
+                .build();
+        Assert.assertEquals("M:Drink maker makes 1 tea with 2 sugar and a stick", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 0.8));
     }
 }

@@ -32,17 +32,32 @@ public class CoffeeMachineUSOneTest {
 
     @Test
     public void should_send_tea_when_we_put_T() {
-        Assert.assertEquals("M:Drink maker makes 1 tea with no sugar and therefore no stick", coffeeMachine.checkCommandBeforePreparation("T::", 1));
+        final CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.TEA)
+                .build();
+        Assert.assertEquals("M:Drink maker makes 1 tea with no sugar and therefore no stick", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1));
     }
 
     @Test
     public void should_send_chocolate_when_we_put_H() {
-        Assert.assertEquals("M:Drink maker makes 1 chocolate with no sugar and therefore no stick", coffeeMachine.checkCommandBeforePreparation("H::", 1));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.CHOCOLATE)
+                .build();
+        Assert.assertEquals("M:Drink maker makes 1 chocolate with no sugar and therefore no stick", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1));
     }
 
     @Test
     public void should_send_coffee_when_we_put_C() {
-        Assert.assertEquals("M:Drink maker makes 1 coffee with no sugar and therefore no stick", coffeeMachine.checkCommandBeforePreparation("C::", 1));
+        CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
+                .CoffeeMachineCommandBuildBuilder
+                .aCoffeeMachineCommandBuild()
+                .withPreparedDrink(CoffeeMachineCommandType.COFFEE)
+                .build();
+        Assert.assertEquals("M:Drink maker makes 1 coffee with no sugar and therefore no stick", coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1));
     }
 
     @Test
