@@ -15,11 +15,10 @@ public class CommandCoffeeMachine {
 
     @Override
     public String toString() {
-        return "CommandCoffeeMachine{" +
-                "commandDrinkType='" + commandDrinkType + '\'' +
-                ", commandNumber=" + commandNumber +
-                ", commandDay=" + commandDay +
-                '}';
+        return  commandDrinkType + "||" +
+                "||" + commandNumber +
+                "||" + commandDay+
+                "||";
     }
 
     public double getTotalPrice() throws CommandException {

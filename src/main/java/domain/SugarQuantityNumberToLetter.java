@@ -1,7 +1,6 @@
 package domain;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public enum SugarQuantityNumberToLetter {
     ZERO("no", "no"),
@@ -25,13 +24,13 @@ public enum SugarQuantityNumberToLetter {
     }
 
     public static String getQuantitySymbol(String quantity) {
-        String quantitySymbol = "";
-        final Optional<SugarQuantityNumberToLetter> sugarQuanity = Arrays.stream(values()).
-                filter(quanity -> quanity.getKeyNumber().equals(quantity)).
-                findAny();
-        if (sugarQuanity.isPresent())
-            quantitySymbol = sugarQuanity.get().getSymbol();
-        return quantitySymbol;
+
+        return Arrays.stream(values()).
+                filter(quanity -> quanity.getKeyNumber().equals(quantity))
+                .map(sugar -> sugar.getSymbol())
+                .findAny()
+                .orElse("");
+
     }
 }
 
