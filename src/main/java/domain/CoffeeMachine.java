@@ -27,20 +27,18 @@ public class CoffeeMachine {
 
 
         final boolean haveEnoughResourceToPrepareDrink;
-        try {
-            haveEnoughResourceToPrepareDrink = stockMachine.isEmpty(commandDrinkType);
 
-            if (haveEnoughResourceToPrepareDrink) {
+        haveEnoughResourceToPrepareDrink = stockMachine.isEmpty(commandDrinkType);
+
+        if (haveEnoughResourceToPrepareDrink) {
+            try {
                 return prepareCommand(command, amount, commandDrinkType);
+            } catch (CommandException e) {
+                e.printStackTrace();
             }
-            else
-                email.sendNotification(commandDrinkType);
-
-        } catch (CommandException commandExcpetion) {
-            System.out.println(commandExcpetion);
-        }
-
-        return "";
+        } else
+            email.sendNotification(commandDrinkType);
+        return "Not enough resource to serve the drink we sent email to fix that ASAP";
     }
 
     public double getStatisticCommand() {

@@ -1,12 +1,12 @@
 package domain;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,17 +27,17 @@ public class CoffeeMachineUSFiveTest {
     }
 
 
-    @Test(expected = CommandException.class)
-    public void should_raise_an_exception_and_send_email_when_quantity_of_resource_end() throws CommandException {
+    @Test
+    public void should_raise_an_error_message_and_send_email_when_quantity_of_resource_end() throws CommandException {
         CoffeeMachineCommandBuild drinkToCommand = CoffeeMachineCommandBuild
                 .CoffeeMachineCommandBuildBuilder
                 .aCoffeeMachineCommandBuild()
                 .withPreparedDrink(CoffeeMachineCommandType.TEA)
                 .build();
 
-        when(stockMachine.isEmpty("T")).thenThrow(CommandException.class);
-        given(stockMachine.isEmpty("T")).willThrow(new CommandException(""));
-        coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1);
+        when(stockMachine.isEmpty("T")).thenReturn(false);
+        final String resultCommand = coffeeMachine.checkCommandBeforePreparation(drinkToCommand.buildCommand(), 1);
+        Assert.assertEquals("Not enough resource to serve the drink we sent email to fix that ASAP", resultCommand);
     }
 
     @Test
