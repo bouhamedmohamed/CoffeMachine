@@ -1,7 +1,6 @@
 package domain;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public enum CoffeeMachineCommandType {
     ORANGE("O", 0.6, new String[]{"one orange juice"}, 0.0, 0.0),
@@ -12,10 +11,10 @@ public enum CoffeeMachineCommandType {
     HOTCHOCOLATE("Hh", 0.5, new String[]{"an extra hot chocolate"}, 0.3, 0.2),
     HOTTEA("Th", 0.6, new String[]{"an extra hot tea"}, 0.3, 0.0),
     EMPTY("", 0.0, new String[]{"", "no", "therefore no"}, 0.0, 0.0),
-    Zero("0", 0.0, new String[]{"", "0", "a"}, 0.0, 0.0);
+    ZERO("0", 0.0, new String[]{"", "0", "a"}, 0.0, 0.0),
+    NUMBER("ANY", 0.0, new String[]{""}, 0.0, 0.0);
 
     static final String HOT_DRINK_SYMBOL = "h";
-    private static StockMachine stockMachine = new StockMachineImplementation();
     private String keyCommand;
     private Double price;
     private String[] symbolCommand;
@@ -47,32 +46,35 @@ public enum CoffeeMachineCommandType {
         return symbolCommand;
     }
 
-    public static Optional<CoffeeMachineCommandType> getCommandType(String command) {
+    public static CoffeeMachineCommandType getCommandType(String command) throws CommandException {
         return Arrays.stream(values())
                 .filter(commandType -> commandType.getKeyCommand().equals(command))
-                .findFirst();
+                .findFirst()
+                .orElse(NUMBER);
+
 
     }
 
 
-    public static String getSymbolCommand(String commandPart, int position) {
+    public static String getSymbolCommand(String commandPart, int position) throws CommandException {
         String symbol = commandPart;
-        final Optional<CoffeeMachineCommandType> commandPartType = getCommandType(commandPart);
-        if (commandPartType.isPresent())
-            symbol = commandPartType.get().getSymbolCommand()[position];
+        final CoffeeMachineCommandType commandPartType = getCommandType(commandPart);
+        if (!commandPartType.keyCommand.equals("ANY"))
+            symbol = commandPartType.getSymbolCommand()[position];
+
         return symbol;
+
     }
 
     public double buyAndGetMoneyBack(double amount) {
         return amount - price;
     }
 
-    public static boolean isHotDrink(String commandDrinkKey) {
+    public static boolean isHotDrink(String commandDrinkKey) throws CommandException {
 
-        final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkKey);
-        if (commandType.isPresent())
-            return commandDrinkKey.contains(HOT_DRINK_SYMBOL);
-        return false;
+        final CoffeeMachineCommandType commandType = getCommandType(commandDrinkKey);
+        return commandDrinkKey.contains(HOT_DRINK_SYMBOL);
+
 
     }
 
@@ -80,19 +82,11 @@ public enum CoffeeMachineCommandType {
         return commandDrinkType.equals("O");
     }
 
-    public static double getTotalPrice(String commandDrinkType, int commandNumber) {
-        final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkType);
-        if (commandType.isPresent())
-            return commandType.get().price * commandNumber;
-        return 0;
+    public static double getTotalPrice(String commandDrinkType, int commandNumber) throws CommandException {
+        final CoffeeMachineCommandType commandType = getCommandType(commandDrinkType);
+        return commandType.price * commandNumber;
+
     }
 
-    public static boolean haveEnoughQuantityToserveTheDrink(String commandDrinkType) {
-        final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkType);
-        if (commandType.isPresent()) {
-            final CoffeeMachineCommandType coffeeMachineCommandType = commandType.get();
-            return stockMachine.hasEnoughRessource(coffeeMachineCommandType.getMilkQuantity(), coffeeMachineCommandType.getWaterQuantity());
-        }
-        return false;
-    }
+
 }

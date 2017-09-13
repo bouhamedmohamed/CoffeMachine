@@ -2,6 +2,7 @@ package domain;
 
 import domain.CoffeeMachineRepository;
 import domain.CommandCoffeeMachine;
+import domain.CommandException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,11 +46,17 @@ public class CoffeeMachineRepositoryImplementation implements CoffeeMachineRepos
     public double getCoffeeMachineStatCommandAtDay(LocalDate commandDay) {
         sommeTotalCommand = 0;
         final Map<String, CommandCoffeeMachine> coffeeMachineCommandAtDay = getCoffeeMachineCommandAtDay(commandDay);
-        coffeeMachineCommandAtDay.values().stream().forEach(commandCoffeeMachine -> getCommandCoffeeMachineConsumer(commandCoffeeMachine));
+        coffeeMachineCommandAtDay.values().stream().forEach(commandCoffeeMachine -> {
+            try {
+                getCommandCoffeeMachineConsumer(commandCoffeeMachine);
+            } catch (CommandException commandExcpetion) {
+                commandExcpetion.printStackTrace();
+            }
+        });
         return sommeTotalCommand;
     }
 
-    private String getCommandCoffeeMachineConsumer(CommandCoffeeMachine commandCoffeeMachine) {
+    private String getCommandCoffeeMachineConsumer(CommandCoffeeMachine commandCoffeeMachine) throws CommandException {
         sommeTotalCommand += commandCoffeeMachine.getTotalPrice();
         return commandCoffeeMachine.toString() + " " + commandCoffeeMachine.getTotalPrice();
     }

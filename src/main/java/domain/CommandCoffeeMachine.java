@@ -22,7 +22,7 @@ public class CommandCoffeeMachine {
                 '}';
     }
 
-    public double getTotalPrice() {
+    public double getTotalPrice() throws CommandException {
         return CoffeeMachineCommandType.getTotalPrice(commandDrinkType,commandNumber);
     }
 }

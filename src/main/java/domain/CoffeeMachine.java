@@ -1,7 +1,6 @@
 package domain;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static domain.CoffeeMachineCommandType.getCommandType;
 import static domain.CoffeeMachineCommandType.getSymbolCommand;
@@ -11,18 +10,36 @@ public class CoffeeMachine {
     final static int SUGAR_QUANTITY = 1;
     final static int STICK_STATE = 2;
     private final CoffeeMachineRepository coffeeMachineRepository;
+    private final StockMachine stockMachine;
 
 
-    public CoffeeMachine(CoffeeMachineRepository coffeeMachineRepository) {
+    public CoffeeMachine(CoffeeMachineRepository coffeeMachineRepository, StockMachine stockMachine) {
 
         this.coffeeMachineRepository = coffeeMachineRepository;
+        this.stockMachine = stockMachine;
     }
 
-    public CoffeeMachine() {
-        this.coffeeMachineRepository = new CoffeeMachineRepositoryImplementation();
+    public String checkCommandBeforePreparation(String command, double amount) {
+
+        final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
+
+
+        final boolean haveEnoughResourceToPrepareDrink;
+        try {
+            haveEnoughResourceToPrepareDrink = stockMachine.hasEnoughRessource(commandDrinkType);
+
+            if (haveEnoughResourceToPrepareDrink) {
+                return prepareCommand(command, amount, commandDrinkType);
+            }
+
+        } catch (CommandException commandExcpetion) {
+            System.out.println(commandExcpetion);
+        }
+
+        return "";
     }
 
-    public String sendCommand(String command) {
+    private String sendCommand(String command) throws CommandException {
         final boolean isEmptyCommand = command.equals("");
         if (isEmptyCommand)
             return "";
@@ -33,7 +50,7 @@ public class CoffeeMachine {
         return coffeeMachineRepository.getCoffeeMachineStatCommandAtDay(LocalDate.now());
     }
 
-    private String buildCommand(String command) {
+    private String buildCommand(String command) throws CommandException {
 
         final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
         final String commandSugar = getPartFromCommand(command, SUGAR_QUANTITY);
@@ -43,7 +60,7 @@ public class CoffeeMachine {
     }
 
 
-    private String buildProductCommandToPrint(String commandDrinkType, String commandSugar, String commandStick) {
+    private String buildProductCommandToPrint(String commandDrinkType, String commandSugar, String commandStick) throws CommandException {
 
         final boolean preparedDrink = isPreparedDrink(commandDrinkType);
         String instantOrPreparedProduct = buildMessageProduct(commandDrinkType, preparedDrink);
@@ -60,18 +77,7 @@ public class CoffeeMachine {
     }
 
 
-    public String CheckCommandBeforePreparation(String command, double amount) {
-
-        final String commandDrinkType = getPartFromCommand(command, DRINK_TYPE);
-        final boolean haveEnoughresourceToPrepareDrink = CoffeeMachineCommandType.haveEnoughQuantityToserveTheDrink(commandDrinkType);
-        if (haveEnoughresourceToPrepareDrink) {
-            return prepareCommand(command, amount, commandDrinkType);
-        } else {
-            throw new RuntimeException("Not enough resource to prepare your drink we sent an email to fix this ASAP");
-        }
-    }
-
-    private String prepareCommand(String command, double amount, String commandDrinkType) {
+    private String prepareCommand(String command, double amount, String commandDrinkType) throws CommandException {
         double moneyBack = buyAndGetBack(commandDrinkType, amount);
         final boolean isNotEnoughMoney = moneyBack < 0;
 
@@ -81,16 +87,14 @@ public class CoffeeMachine {
             return sendCommand(command);
     }
 
-    private double buyAndGetBack(String commandDrinkType, double amount) {
+    private double buyAndGetBack(String commandDrinkType, double amount) throws CommandException {
 
-        final Optional<CoffeeMachineCommandType> commandType = getCommandType(commandDrinkType);
-        if (commandType.isPresent()) {
-            return commandType.get().buyAndGetMoneyBack(amount);
-        }
-        throw new RuntimeException("Product not found");
+        final CoffeeMachineCommandType commandType = getCommandType(commandDrinkType);
+        return commandType.buyAndGetMoneyBack(amount);
+
     }
 
-    private String prepareSugarQuantity(String commandSugar, boolean preparedDrink) {
+    private String prepareSugarQuantity(String commandSugar, boolean preparedDrink) throws CommandException {
         String sugarQuantity = getSymbol(commandSugar, SUGAR_QUANTITY);
         if (preparedDrink)
             sugarQuantity = SugarQuantityNumberToLetter.getQuantitySymbol(sugarQuantity);
@@ -114,12 +118,12 @@ public class CoffeeMachine {
         return commandPart;
     }
 
-    private String getSymbol(String commandPart, int position) {
+    private String getSymbol(String commandPart, int position) throws CommandException {
         return getSymbolCommand(commandPart, position);
     }
 
 
-    private boolean isPreparedDrink(String commandDrinkType) {
+    private boolean isPreparedDrink(String commandDrinkType) throws CommandException {
         return isOrangeJuce(commandDrinkType) || isHotDrink(commandDrinkType);
     }
 
@@ -127,7 +131,7 @@ public class CoffeeMachine {
         return CoffeeMachineCommandType.isOrangeJuce(commandDrinkType);
     }
 
-    private boolean isHotDrink(String commandDrinkType) {
+    private boolean isHotDrink(String commandDrinkType) throws CommandException {
         return CoffeeMachineCommandType.isHotDrink(commandDrinkType);
     }
 }

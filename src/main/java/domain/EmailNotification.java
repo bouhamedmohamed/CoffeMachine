@@ -1,5 +1,5 @@
 package domain;
 
 public interface EmailNotification {
-    public void send(String milk);
+    public void send(String milk) throws CommandException;
 }
